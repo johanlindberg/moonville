@@ -1,5 +1,11 @@
 # Moonville
 
+## Space Apps Challenge 2013
+
+This is a repository for my (potential) contribution to the [NASA Space Apps Challenge 2013](http://spaceappschallenge.org/). I will not be able to join the competition since the Hackathon clashes with a lot of other stuff but I'm hoping to build a rough, playable prototype of a simulation game called Moonville.
+
+## Challenge description for [Bootstraping of Space Industry](http://spaceappschallenge.org/challenge/affordable-rapid-bootstrapping-of-space-industry/).
+
 ### Background:
 
 The concept of establishing a presence on the Moon in some form is elusive to many people. How hard is it? Could we do it? Why should we? What resources does the Moon have that could support an industry? We want to raise awareness about both the potential for a lunar industry and the challenges of developing one.
@@ -10,7 +16,7 @@ Develop a simulation of a lunar industry through a series of "bootstrapping" sta
 
 ### Functional Specifications:
 
-The industry consists of a set of devices equivalent to the "Global Village Construction Set" but adapted to lunar industry (no humans present in the early stages; just robots). Players get to launch an initial set of hardware to the Moon, choosing from a set of available devices. Suggested devices: lunar excavators, metal refineries (extract metal from the soil), solar cell makers, 3D printers, communication relays, etc.
+The industry consists of a set of devices equivalent to the ["Global Village Construction Set"](http://opensourceecology.org/wiki/Global_Village_Construction_Set) but adapted to lunar industry (no humans present in the early stages; just robots). Players get to launch an initial set of hardware to the Moon, choosing from a set of available devices. Suggested devices: lunar excavators, metal refineries (extract metal from the soil), solar cell makers, 3D printers, communication relays, etc.
 
 The players have monetary budgets, from which they can buy launch mass for the machines they send to the Moon in the initial set and then in subsequent shipments of parts. Users can make money by selling manufactured goods such as propellants to spaceports in orbit or spare parts to other users/entities, which are introduced at varying stages of the game. The game ends when the user runs out of money.
 
