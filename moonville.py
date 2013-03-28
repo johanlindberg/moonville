@@ -47,8 +47,10 @@ class Moonville(object):
         cwd = os.path.abspath(os.getcwd())
         if os.path.exists(cwd + GAMES_DIR):
             for d in os.listdir(cwd + GAMES_DIR):
-                if d[0] != ".":
-                    self.games.append(d)            
+                if d[0] != "." and \
+                   os.path.isdir(cwd + GAMES_DIR + "/" + d):
+                    
+                    self.games.append(d)
 
     def start(self):
         """Starts the Moonville platform."""
