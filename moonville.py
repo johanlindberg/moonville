@@ -22,6 +22,7 @@
 
 import os
 import os.path
+import sys
 
 # Platform imports
 import cocos
@@ -32,35 +33,33 @@ from constants import *
 import scenes.main
 
 class Moonville(object):
-    def __init__(self):
-        self.load_games()
-
-    def load_games(self):
-        """Initializes the list of available game configurations.
+    def __init__(self, game):
+        self.load_game(game)
+        
+    def load_game(self, game):
+        """Initializes Moonville with <game>'s configuration.
 
         XXX This implies that current working directory (cwd) is where
         moonville.py is located. Once we package this as an executable that
         might not be the case.
         """
         
-        self.games = []
-        cwd = os.path.abspath(os.getcwd())
-        if os.path.exists(cwd + GAMES_DIR):
-            for d in os.listdir(cwd + GAMES_DIR):
-                if d[0] != "." and \
-                   os.path.isdir(cwd + GAMES_DIR + "/" + d):
-                    
-                    self.games.append(d)
+        game_dir = os.path.abspath(os.getcwd() + GAMES_DIR + "/" + game)
+        if os.path.exists(game_dir) and \
+           os.path.isdir(game_dir):
+            self.game = game
+            self.game_dir = game_dir
 
     def start(self):
         """Starts the Moonville platform."""
         
         cocos.director.director.init(resizable = False, width = 800, height = 600)
-        self.main = scenes.main.Main(self.games)
+        self.main = scenes.main.Main(self)
         cocos.director.director.run(self.main)
     
 if __name__ == "__main__":
-    print HEADER
-
-    moonville = Moonville()
+    if len(sys.argv) != 2:
+        print constants.USAGE
+            
+    moonville = Moonville(sys.argv[1])
     moonville.start()

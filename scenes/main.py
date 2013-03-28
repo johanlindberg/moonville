@@ -27,33 +27,28 @@ import pyglet
 # Moonville imports
 from constants import *
 
+
 class Main(cocos.scene.Scene):
-    def __init__(self, games):
+    def __init__(self, moonville):
         super(Main, self).__init__()
-        self.add(cocos.layer.MultiplexLayer(MainMenu(games)), z = 0)
+        self.add(cocos.layer.MultiplexLayer(MainMenu(moonville)), z = 0)
 
 class MainMenu(cocos.menu.Menu):
-    def __init__(self, games):
-        super(MainMenu, self).__init__(NAME)
+    def __init__(self, moonville):
+        super(MainMenu, self).__init__(moonville.game)
+
+        self.game = moonville.game
 
         self.menu_anchor_y = "CENTER"
         self.menu_anchor_x = "CENTER"
 
-        items = []
-        for game in games:
-            attr = "on_play_%s" % (game.lower())
-            self.__dict__[attr] = self._make_game_callback(game)
-            
-            items.append(cocos.menu.MenuItem("PLAY %s:%s" % (NAME, game), self.__dict__[attr]))
-
-        items.append(cocos.menu.MenuItem("QUIT", self.on_quit) )
+        items = [cocos.menu.MenuItem("PLAY GAME", self.on_play_game),
+                 cocos.menu.MenuItem("QUIT", self.on_quit)]
+        
         self.create_menu(items, cocos.menu.zoom_in(), cocos.menu.zoom_out())
 
-    def _make_game_callback(self, game):
-        def _temp():
-            
-            print "Play %s" % (game)
-        return _temp
+    def on_play_game(self):
+        print "Play %s" % (self.game)
         
     def on_quit(self):
         pyglet.app.exit()
