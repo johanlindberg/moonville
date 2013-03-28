@@ -20,8 +20,7 @@
 #### OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #### SOFTWARE.
 
-import os
-import os.path
+import copy
 
 # Platform imports
 import cocos
@@ -29,41 +28,28 @@ import pyglet
 
 # Moonville imports
 from constants import *
-import scenes
 
-class Moonville(object):
-    def __init__(self):
-        self.load_games()
+class Main(cocos.menu.Menu):
+    def __init__(self, games):
+        super(Main, self).__init__(NAME)
 
-    def load_games(self):
-        """Initializes the list of available game configurations.
+        self.menu_anchor_y = "CENTER"
+        self.menu_anchor_x = "CENTER"
 
-        XXX This implies that current working directory (cwd) is where
-        moonville.py is located. Once we package this as an executable that
-        might not be the case.
-        """
+        items = []
+        for game in games:
+            attr = "on_play_%s" % (game.lower())
+            self.__dict__[attr] = self._make_game_callback(game)
+            
+            items.append(cocos.menu.MenuItem("PLAY %s:%s" % (NAME, game), self.__dict__[attr]))
+
+        items.append(cocos.menu.MenuItem("QUIT", self.on_quit) )
+        self.create_menu(items, cocos.menu.zoom_in(), cocos.menu.zoom_out())
+
+    def _make_game_callback(self, game):
+        def _temp():
+            print "Play %s" % (game)
+        return _temp
         
-        self.games = []
-        cwd = os.path.abspath(os.getcwd())
-        if os.path.exists(cwd + GAMES_DIR):
-            for d in os.listdir(cwd + GAMES_DIR):
-                if d[0] != ".":
-                    self.games.append(d)            
-
-    def start(self):
-        """Starts the Moonville platform."""
-        
-        cocos.director.director.init(resizable = False, width = 800, height = 600)
-        scene = cocos.scene.Scene()
-
-        main = scenes.Main(self.games)
-        
-        multiplex = cocos.layer.MultiplexLayer(main)
-        scene.add(multiplex, z = 0)
-        cocos.director.director.run(scene)
-    
-if __name__ == "__main__":
-    print HEADER
-
-    moonville = Moonville()
-    moonville.start()
+    def on_quit(self):
+        pyglet.app.exit()
