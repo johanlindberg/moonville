@@ -42,12 +42,12 @@ class MainMenu(cocos.menu.Menu):
         self.menu_anchor_y = "CENTER"
         self.menu_anchor_x = "CENTER"
 
-        items = [cocos.menu.MenuItem("PLAY GAME", self.on_play_game),
+        items = [cocos.menu.MenuItem("PLAY", self.on_play),
                  cocos.menu.MenuItem("QUIT", self.on_quit)]
         
         self.create_menu(items, cocos.menu.zoom_in(), cocos.menu.zoom_out())
 
-    def on_play_game(self):
+    def on_play(self):
         print "Play %s" % (self.game)
         
     def on_quit(self):

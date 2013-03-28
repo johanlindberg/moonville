@@ -21,13 +21,16 @@
 #### SOFTWARE.
 
 NAME = u"Moonville"
-VERSION = u"0.1\u03B1"
+VERSION = u"0.2 \u03B1"
 
 HEADER = "%s %s" % (NAME, VERSION)
 
 ## Info
-USAGE = """To start a game run `python moonville.py <game>` on the command line.
-<game> must be the name of a directory located in /moonville/games."""
+USAGE = """%s
+
+USAGE: To start a game, run `python moonville.py <game>` on the command line.
+NOTE! <game> must be the name of a directory located in /moonville/games.
+""" % (HEADER)
 
 # Moonville uses the MIT License
 LICENSE = """Copyright (c) 2013 Johan Lindberg

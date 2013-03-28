@@ -59,7 +59,8 @@ class Moonville(object):
     
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print constants.USAGE
+        print USAGE
+        sys.exit(1)
             
     moonville = Moonville(sys.argv[1])
     moonville.start()
