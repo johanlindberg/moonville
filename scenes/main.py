@@ -23,6 +23,8 @@
 # Platform imports
 import cocos
 import cocos.actions
+import cocos.layer
+import cocos.sprite
 import pyglet
 
 # Moonville imports
@@ -66,7 +68,13 @@ class Main(configurable.Scene):
 
         self.load_configurations(moonville, MAIN)
 
-        self.add(MainMenu(moonville, self.font_title), z = 0)
+        # Moon overlay
+        moon = cocos.sprite.Sprite("moon_overlay.png")
+        moon.position = (700, 100)
+        
+        self.add(cocos.layer.ColorLayer(0, 0, 0, 255), z = 0)
+        self.add(moon, z = 1)
+        self.add(MainMenu(moonville, self.font_title), z = 2)
 
 class MainMenu(cocos.menu.Menu):
     def __init__(self, moonville, _font_title):
