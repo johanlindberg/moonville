@@ -20,11 +20,14 @@
 #### OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #### SOFTWARE.
 
+import os.path
+
 # Platform imports
 import cocos
 import cocos.actions
 import cocos.layer
 import cocos.sprite
+import cocos.text
 import pyglet
 
 # Moonville imports
@@ -34,7 +37,25 @@ import configurable
 class Introduction(configurable.Scene):
     def __init__(self, moonville):
         super(Introduction, self).__init__()
-
         self.moonville = moonville
 
+        self.information = {}
+
+        ## Available configuration items
+        def set_information_text(filename):
+            self.information['text'] = moonville.game_dir + "/" + filename
+        self.set_information_text = set_information_text
+
+        self.load_configurations(moonville, INTRODUCTION)
+
+        # load introduction text from file
+        try:
+            text_in = open(self.information['text'])
+            text = cocos.text.RichLabel(text = "".join(text_in.readlines()), position = (10, 580))
+            self.add(text, z = 1)
+
+        finally:
+            text_in.close()
+
         self.add(cocos.layer.ColorLayer(32, 32, 32, 255), z = 0)
+        

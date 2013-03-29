@@ -59,3 +59,4 @@ GAMES_DIR = "/games"
 ## Configurations
 COMMON = "common.conf"
 MAIN = "main.conf"
+INTRODUCTION = "introduction.conf"
