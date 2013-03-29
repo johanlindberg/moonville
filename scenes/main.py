@@ -47,8 +47,22 @@ class Main(configurable.Scene):
         self.set_title_font_size = set_title_font_size
 
         def set_title_color(color):
-            self.font_title['color'] = color
+            color = self._parse_color(color)
+            if color:
+                self.font_title['color'] = color
         self.set_title_color = set_title_color
+
+        def set_title_bold(bold):
+            bold = self._parse_bool(bold)
+            if bold:
+                self.font_title['bold'] = bold
+        self.set_title_bold = set_title_bold
+        
+        def set_title_italic(italic):
+            italic = self._parse_bool(italic)
+            if italic:
+                self.font_title['italic'] = italic
+        self.set_title_italic = set_title_italic
 
         self.load_configurations(moonville, MAIN)
 

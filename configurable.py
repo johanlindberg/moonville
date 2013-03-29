@@ -72,5 +72,28 @@ class Scene(cocos.scene.Scene):
     def _parse_int(self, value):
         try:
             return int(value)
+        
         except ValueError:
             print "WARNING: '%s' is not an int value. This item will be ignored!" % (value)
+
+    def _parse_color(self, value):
+        try:
+            r, g, b, a = value.split(",")
+            if r[0] == "(":
+                r = r[1:]
+            if a[-1] == ")":
+                a = a[:-1]
+
+            return (int(r), int(g), int(b), int(a))
+                
+        except ValueError:
+            print "WARNING: '%s' is not a valid color value. This item will be ignored!" % (value)
+
+    def _parse_bool(self, value):
+        if value.lower() == "true":
+            return True
+        elif value.lower() == "false":
+            return False
+        else:
+            return None
+            
