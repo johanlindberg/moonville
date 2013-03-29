@@ -23,7 +23,7 @@
 NAME = u"Moonville"
 VERSION = u"0.2 \u03B1"
 
-HEADER = "%s %s" % (NAME, VERSION)
+HEADER = u"%s %s" % (NAME, VERSION)
 
 ## Info
 USAGE = """%s
@@ -55,3 +55,7 @@ SOFTWARE."""
 
 ## Directories
 GAMES_DIR = "/games"
+
+## Configurations
+COMMON = "common.conf"
+MAIN = "main.conf"

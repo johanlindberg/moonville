@@ -22,30 +22,53 @@
 
 # Platform imports
 import cocos
+import cocos.actions
 import pyglet
 
 # Moonville imports
 from constants import *
+import configurable
 
-
-class Main(cocos.scene.Scene):
+class Main(configurable.Scene):
     def __init__(self, moonville):
         super(Main, self).__init__()
-        self.add(cocos.layer.MultiplexLayer(MainMenu(moonville)), z = 0)
+
+        self.font_title = {}
+
+        ## Available configuration items
+        def set_title_font_name(font_name):
+            self.font_title['font_name'] = font_name
+        self.set_title_font_name = set_title_font_name
+        
+        def set_title_font_size(font_size):
+            font_size = self._parse_int(font_size)
+            if font_size:
+                self.font_title['font_size'] = font_size
+        self.set_title_font_size = set_title_font_size
+
+        def set_title_color(color):
+            self.font_title['color'] = color
+        self.set_title_color = set_title_color
+
+        self.load_configurations(moonville, MAIN)
+
+        self.add(MainMenu(moonville, self.font_title), z = 0)
 
 class MainMenu(cocos.menu.Menu):
-    def __init__(self, moonville):
+    def __init__(self, moonville, _font_title):
         super(MainMenu, self).__init__(moonville.game)
 
+        # Update configuration items
+        self.font_title.update(_font_title)
+        
         self.game = moonville.game
 
-        self.menu_anchor_y = "CENTER"
-        self.menu_anchor_x = "CENTER"
+        self.items = [cocos.menu.MenuItem("PLAY", self.on_play),
+                      cocos.menu.MenuItem("QUIT", self.on_quit)]
 
-        items = [cocos.menu.MenuItem("PLAY", self.on_play),
-                 cocos.menu.MenuItem("QUIT", self.on_quit)]
-        
-        self.create_menu(items, cocos.menu.zoom_in(), cocos.menu.zoom_out())
+        self.create_menu(self.items,
+                         cocos.actions.ScaleTo(1.2, duration = 0.1),
+                         cocos.actions.ScaleTo(1.0, duration = 0.1))
 
     def on_play(self):
         print "Play %s" % (self.game)

@@ -26,15 +26,16 @@ import sys
 
 # Platform imports
 import cocos
-import pyglet
 
 # Moonville imports
 from constants import *
 import scenes.main
 
 class Moonville(object):
-    def __init__(self, game):
-        self.load_game(game)
+    def __init__(self, game = None):
+        if game is not None:
+            self.load_game(game)
+            self.start()
         
     def load_game(self, game):
         """Initializes Moonville with <game>'s configuration.
@@ -61,6 +62,6 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print USAGE
         sys.exit(1)
-            
-    moonville = Moonville(sys.argv[1])
-    moonville.start()
+
+    game = sys.argv[1]
+    moonville = Moonville(game)
