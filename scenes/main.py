@@ -24,12 +24,14 @@
 import cocos
 import cocos.actions
 import cocos.layer
+import cocos.scenes.transitions
 import cocos.sprite
 import pyglet
 
 # Moonville imports
 from constants import *
 import configurable
+import scenes.introduction
 
 class Main(configurable.Scene):
     def __init__(self, moonville):
@@ -82,7 +84,8 @@ class MainMenu(cocos.menu.Menu):
 
         # Update configuration items
         self.font_title.update(_font_title)
-        
+
+        self.moonville = moonville
         self.game = moonville.game
 
         self.items = [cocos.menu.MenuItem("PLAY", self.on_play),
@@ -93,7 +96,8 @@ class MainMenu(cocos.menu.Menu):
                          cocos.actions.ScaleTo(1.0, duration = 0.1))
 
     def on_play(self):
-        print "Play %s" % (self.game)
+        intro = scenes.introduction.Introduction(self.moonville)
+        cocos.director.director.replace(cocos.scenes.transitions.ZoomTransition(intro, duration = 2))
         
     def on_quit(self):
         pyglet.app.exit()
