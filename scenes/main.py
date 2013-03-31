@@ -71,7 +71,7 @@ class Main(configurable.Scene):
         self.load_configurations(moonville, MAIN)
 
         # Moon overlay
-        moon = cocos.sprite.Sprite("moon_overlay.png")
+        moon = cocos.sprite.Sprite(RESOURCES + "/moon_overlay.png")
         moon.position = (700, 100)
         
         self.add(cocos.layer.ColorLayer(0, 0, 0, 255), z = 0)

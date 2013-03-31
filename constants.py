@@ -53,10 +53,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE."""
 
+import os
+
 ## Directories
-GAMES_DIR = "/games"
+GAMES_DIR = os.getcwd() + "/games"
+RESOURCES = "resources"
 
 ## Configurations
 COMMON = "common.conf"
 MAIN = "main.conf"
 INTRODUCTION = "introduction.conf"
+
+## Window size
+WIDTH = 800
+HEIGHT = 600
+
+# Text
+LINE_HEIGHT = 25
+

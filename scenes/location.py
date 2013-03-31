@@ -20,48 +20,21 @@
 #### OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #### SOFTWARE.
 
-import os
 import os.path
-import sys
 
 # Platform imports
 import cocos
+import cocos.actions
+import cocos.layer
+import cocos.sprite
+import cocos.text
+import pyglet
 
 # Moonville imports
 from constants import *
-import scenes.main
+import configurable
 
-class Moonville(object):
-    def __init__(self, game = None):
-        if game is not None:
-            self.load_game(game)
-            self.start()
-        
-    def load_game(self, game):
-        """Initializes Moonville with <game>'s configuration.
-
-        XXX This implies that current working directory (cwd) is where
-        moonville.py is located. Once we package this as an executable that
-        might not be the case.
-        """
-        
-        game_dir = os.path.abspath(GAMES_DIR + "/" + game)
-        if os.path.exists(game_dir) and \
-           os.path.isdir(game_dir):
-            self.game = game
-            self.game_dir = game_dir
-
-    def start(self):
-        """Starts the Moonville platform."""
-        
-        cocos.director.director.init(resizable = False, width = WIDTH, height = HEIGHT)
-        self.main = scenes.main.Main(self)
-        cocos.director.director.run(self.main)
-    
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print USAGE
-        sys.exit(1)
-
-    game = sys.argv[1]
-    moonville = Moonville(game)
+class Location(configurable.Scene):
+    def __init__(self, moonville):
+        super(Location, self).__init__()
+        self.moonville = moonville
