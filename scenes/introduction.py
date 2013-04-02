@@ -58,9 +58,17 @@ class Introduction(configurable.Scene):
             index += 1
 
         self.add(cocos.layer.ColorLayer(32, 32, 32, 255), z = 0)
+
+        # Moon overlay
+        moon = cocos.sprite.Sprite(RESOURCES + "/moon_overlay.png")
+        moon.position = (WIDTH - 100, 100)
+        self.add(moon, z = 1)
+
+        # Next arrow
         next = cocos.sprite.Sprite(RESOURCES + "/arrow_right.png")
         next.position = (WIDTH - 50, 50)
         self.add(next, z = 2)
+
         self.add(MouseClickLayer(self.moonville), z = 3)
 
 class MouseClickLayer(cocos.layer.Layer):
