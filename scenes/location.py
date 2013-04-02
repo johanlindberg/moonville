@@ -38,3 +38,36 @@ class Location(configurable.Scene):
     def __init__(self, moonville):
         super(Location, self).__init__()
         self.moonville = moonville
+
+        # Moon overlay
+        moon = cocos.sprite.Sprite(RESOURCES + "/moon_overlay.png")
+        moon.position = (WIDTH - 100, 100)
+        
+        self.add(cocos.layer.ColorLayer(0, 0, 0, 255), z = 0)
+        self.add(moon, z = 1)
+        self.add(LocationMenu(moonville), z = 2)
+
+
+class LocationMenu(cocos.menu.Menu):
+    def __init__(self, moonville):
+        super(LocationMenu, self).__init__(moonville.game)
+
+        self.moonville = moonville
+        self.game = moonville.game
+
+        self.items = []
+        index = 1
+        for location in self.moonville.locations:
+            self.items.append(cocos.menu.MenuItem("%s. %s" % (index, location[:-5]),
+                                                  self.location_handler(index - 1)))
+            index += 1
+
+        self.create_menu(self.items,
+                         cocos.actions.ScaleTo(1.2, duration = 0.1),
+                         cocos.actions.ScaleTo(1.0, duration = 0.1))
+
+    def location_handler(self, index):
+        i = index
+        def _callback():
+            print "You clicked on ", self.moonville.locations[i]
+        return _callback

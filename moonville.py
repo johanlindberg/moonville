@@ -51,6 +51,22 @@ class Moonville(object):
             self.game = game
             self.game_dir = game_dir
 
+            self.locations = self.load_locations(game_dir)
+
+    def load_locations(self, game_dir):
+        locations_dir = os.path.abspath(game_dir + LOCATIONS_DIR)
+        if os.path.exists(locations_dir) and \
+           os.path.isdir(locations_dir):
+            locations = []
+            for f in os.listdir(locations_dir):
+                if f[-5:] == ".conf" and \
+                   f[0] != "." and \
+                   not os.path.isdir(locations_dir + "/" + f):
+                    
+                    locations.append(f)
+
+            return locations
+        
     def start(self):
         """Starts the Moonville platform."""
         

@@ -57,6 +57,7 @@ import os
 
 ## Directories
 GAMES_DIR = os.getcwd() + "/games"
+LOCATIONS_DIR = "/locations"
 RESOURCES = "resources"
 
 ## Configurations
