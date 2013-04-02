@@ -54,7 +54,9 @@ class Introduction(configurable.Scene):
             text_in = open(self.information['text'])
             index = 1
             for line in text_in.readlines():
-                text = cocos.text.RichLabel(text = line, position = (20, HEIGHT - (LINE_HEIGHT * index) - 20), color = (255, 255, 255, 255))
+                text = cocos.text.RichLabel(text = line,
+                                            position = (20, HEIGHT - (LINE_HEIGHT * index) - 20),
+                                            color = (255, 255, 255, 255))
                 self.add(text, z = 1)
                 index += 1
 
