@@ -49,19 +49,13 @@ class Introduction(configurable.Scene):
 
         self.load_configurations(moonville, INTRODUCTION)
 
-        # load introduction text from file
-        try:
-            text_in = open(self.information['text'])
-            index = 1
-            for line in text_in.readlines():
-                text = cocos.text.RichLabel(text = line,
-                                            position = (20, HEIGHT - (LINE_HEIGHT * index) - 20),
-                                            color = (255, 255, 255, 255))
-                self.add(text, z = 1)
-                index += 1
-
-        finally:
-            text_in.close()
+        index = 1
+        for line in self.moonville.load_introduction(self.information):
+            text = cocos.text.RichLabel(text = line,
+                                        position = (20, HEIGHT - (LINE_HEIGHT * index) - 20),
+                                        color = (255, 255, 255, 255))
+            self.add(text, z = 1)
+            index += 1
 
         self.add(cocos.layer.ColorLayer(32, 32, 32, 255), z = 0)
         next = cocos.sprite.Sprite(RESOURCES + "/arrow_right.png")

@@ -53,6 +53,17 @@ class Moonville(object):
 
             self.locations = self.load_locations(game_dir)
 
+    def load_introduction(self, information):
+        text = []
+        try:
+            text_in = open(information['text'])
+            text = text_in.readlines()
+
+        finally:
+            text_in.close()
+
+        return text
+
     def load_locations(self, game_dir):
         locations_dir = os.path.abspath(game_dir + LOCATIONS_DIR)
         if os.path.exists(locations_dir) and \
