@@ -27,7 +27,7 @@ import cocos
 import cocos.actions
 import cocos.layer
 import cocos.sprite
-import cocos.text
+import cocos.tiles
 import pyglet
 
 # Moonville imports
@@ -39,4 +39,9 @@ class Build(configurable.Scene):
         super(Build, self).__init__()
         self.moonville = moonville
 
-        print self.moonville.locations[self.moonville.location]
+        scrolling_manager = cocos.layer.ScrollingManager()
+        surface = cocos.tiles.load(self.moonville.locations_dir + "/Sea of tranquility.tmx")["surface"]
+        scrolling_manager.add(surface)
+
+        self.add(cocos.layer.ColorLayer(132, 146, 119, 255), z = 0)
+        self.add(scrolling_manager, z = 1)

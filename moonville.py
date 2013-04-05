@@ -68,6 +68,7 @@ class Moonville(object):
         locations_dir = os.path.abspath(game_dir + LOCATIONS_DIR)
         if os.path.exists(locations_dir) and \
            os.path.isdir(locations_dir):
+            self.locations_dir = locations_dir
             locations = []
             for f in os.listdir(locations_dir):
                 if f[-5:] == ".conf" and \

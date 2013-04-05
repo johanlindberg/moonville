@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="isometric" width="10" height="10" tilewidth="64" tileheight="64" backgroundcolor="#a9b195">
+ <tileset firstgid="1" name="iso-64x64-outside" tilewidth="64" tileheight="64">
+  <image source="iso-64x64-outside.png" width="640" height="1024"/>
+ </tileset>
+ <layer name="surface" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJwzZoAAVwYEMANiYwbigAmUdiNSPTqwRGK741BjhsN8mF5nEuxDVutCgj50txEbPujAhIA8ANShBAk=
+  </data>
+ </layer>
+</map>
