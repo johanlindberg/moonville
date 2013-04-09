@@ -33,6 +33,7 @@ import pyglet
 
 # Moonville imports
 from constants import *
+import extended
 import configurable
 
 class Build(configurable.Scene):
@@ -56,9 +57,9 @@ class Build(configurable.Scene):
         self.add(MouseClickLayer(self.moonville, self), z = 2)
 
     def load_LVCS(self):
-        self.LVCS_button_out = cocos.sprite.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Button_Out.png")
+        self.LVCS_button_out = extended.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Button_Out.png")
         
-        self.LVCS_button_in = cocos.sprite.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Button_In.png")
+        self.LVCS_button_in = extended.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Button_In.png")
         self.LVCS_button_in.opacity = 0
 
         self.LVCS_button_out.position = (16, 40)
@@ -130,11 +131,16 @@ class MouseClickLayer(cocos.layer.Layer):
         self.show = False
 
     def on_mouse_press(self, x, y, buttons, modifiers):
-        left, right = 0, 32
-        top, bottom = 8, 72
-        if x > left and x < right and y > top and y < bottom:
-            self.show = not(self.show)
-            self.scene.show_LVCS(self.show)            
-        
+        # Check for LVCS toggle button press
+        if self.scene.LVCS_button_in.opacity > 0 and \
+           self.scene.LVCS_button_in.covers((x, y)):
+
+            self.scene.show_LVCS(False)
+            
+        elif self.scene.LVCS_button_out.opacity > 0 and \
+             self.scene.LVCS_button_out.covers((x, y)):
+            
+            self.scene.show_LVCS(True)
+
     def on_mouse_motion (self, x, y, dx, dy):
         pass

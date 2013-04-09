@@ -31,6 +31,7 @@ import pyglet
 # Moonville imports
 from constants import *
 import configurable
+import extended
 import scenes.build
 
 class Main(configurable.Scene):
@@ -45,10 +46,10 @@ class Main(configurable.Scene):
         background = cocos.sprite.Sprite(MAIN_MENU_RESOURCES + "/Main_Menu_Background.png")
         background.position = (400, 300)
 
-        new_game_option = cocos.sprite.Sprite(MAIN_MENU_RESOURCES + "/New_Game_Menu_Option.png")
+        new_game_option = extended.Sprite(MAIN_MENU_RESOURCES + "/New_Game_Menu_Option.png")
         new_game_option.position = (180, 330)
 
-        options_option = cocos.sprite.Sprite(MAIN_MENU_RESOURCES + "/Options_Menu_Option.png")
+        options_option = extended.Sprite(MAIN_MENU_RESOURCES + "/Options_Menu_Option.png")
         options_option.position = (180, 270)
         
         self.add(cocos.layer.ColorLayer(0, 0, 0, 255), z = 0)
@@ -83,8 +84,5 @@ class MouseClickLayer(cocos.layer.Layer):
     def on_mouse_press(self, x, y, buttons, modifiers):
         for option in self.options:
             sprite, callback = option
-            left, right = sprite.position[0] - (sprite.width / 2), sprite.position[0] + (sprite.width / 2)
-            top, bottom = sprite.position[1] - (sprite.height / 2), sprite.position[1] + (sprite.height / 2)
-
-            if x > left and x < right and y > top and y < bottom:
+            if sprite.covers((x, y)):
                 callback()
