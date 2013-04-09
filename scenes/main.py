@@ -36,68 +36,55 @@ import scenes.introduction
 class Main(configurable.Scene):
     def __init__(self, moonville):
         super(Main, self).__init__()
+        self.moonville = moonville
 
-        self.font_title = {}
+        # XXX You need to re-think what should be configurable
+        # in this scene! (JL 2013-04-08)
+        self.load_configurations(self.moonville, MAIN)
 
-        ## Available configuration items
-        def set_title_font_name(font_name):
-            self.font_title['font_name'] = font_name
-        self.set_title_font_name = set_title_font_name
-        
-        def set_title_font_size(font_size):
-            font_size = self._parse_int(font_size)
-            if font_size:
-                self.font_title['font_size'] = font_size
-        self.set_title_font_size = set_title_font_size
+        background = cocos.sprite.Sprite(RESOURCES + "/Main_Menu_Background.png")
+        background.position = (400, 300)
 
-        def set_title_color(color):
-            color = self._parse_color(color)
-            if color:
-                self.font_title['color'] = color
-        self.set_title_color = set_title_color
+        new_game_option = cocos.sprite.Sprite(RESOURCES + "/New_Game_Menu_Option.png")
+        new_game_option.position = (180, 330)
 
-        def set_title_bold(bold):
-            bold = self._parse_bool(bold)
-            if bold:
-                self.font_title['bold'] = bold
-        self.set_title_bold = set_title_bold
-        
-        def set_title_italic(italic):
-            italic = self._parse_bool(italic)
-            if italic:
-                self.font_title['italic'] = italic
-        self.set_title_italic = set_title_italic
-
-        self.load_configurations(moonville, MAIN)
-
-        # Moon overlay
-        moon = cocos.sprite.Sprite(RESOURCES + "/moon_overlay.png")
-        moon.position = (WIDTH - 100, 100)
+        options_option = cocos.sprite.Sprite(RESOURCES + "/Options_Menu_Option.png")
+        options_option.position = (180, 270)
         
         self.add(cocos.layer.ColorLayer(0, 0, 0, 255), z = 0)
-        self.add(moon, z = 1)
-        self.add(MainMenu(moonville, self.font_title), z = 2)
+        
+        self.add(background, z = 1)
+        self.add(new_game_option, z = 2)
+        self.add(options_option, z = 2)
 
-class MainMenu(cocos.menu.Menu):
-    def __init__(self, moonville, _font_title):
-        super(MainMenu, self).__init__(moonville.game)
+        self.add(MouseClickLayer(self.moonville, [(new_game_option, self.on_new_game),
+                                                  (options_option, self.on_options), ]), z = 3)
 
-        # Update configuration items
-        self.font_title.update(_font_title)
-
-        self.moonville = moonville
-        self.game = moonville.game
-
-        self.items = [cocos.menu.MenuItem("PLAY", self.on_play),
-                      cocos.menu.MenuItem("QUIT", self.on_quit)]
-
-        self.create_menu(self.items,
-                         cocos.actions.ScaleTo(1.2, duration = 0.1),
-                         cocos.actions.ScaleTo(1.0, duration = 0.1))
-
-    def on_play(self):
+    # Menu callbacks
+    def on_new_game(self):
         intro = scenes.introduction.Introduction(self.moonville)
         cocos.director.director.replace(cocos.scenes.transitions.ZoomTransition(intro, duration = 2))
         
+    def on_options(self):
+        print "TBD!"
+        
     def on_quit(self):
         pyglet.app.exit()
+
+
+class MouseClickLayer(cocos.layer.Layer):
+    is_event_handler = True
+
+    def __init__(self, moonville, options):
+        super(MouseClickLayer, self).__init__()
+        self.moonville = moonville
+        self.options = options
+
+    def on_mouse_press(self, x, y, buttons, modifiers):
+        for option in self.options:
+            sprite, callback = option
+            left, right = sprite.position[0] - (sprite.width / 2), sprite.position[0] + (sprite.width / 2)
+            top, bottom = sprite.position[1] - (sprite.height / 2), sprite.position[1] + (sprite.height / 2)
+
+            if x > left and x < right and y > top and y < bottom:
+                callback()
