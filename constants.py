@@ -59,6 +59,9 @@ import os
 GAMES_DIR = os.getcwd() + "/games"
 LOCATIONS_DIR = "/locations"
 RESOURCES = "resources"
+MAIN_MENU_RESOURCES = "resources/MainMenu"
+POPUP_MENU_RESOURCES = "resources/PopupMenus"
+LVCS_RESOURCES = "resources/LVCS"
 
 ## Configurations
 COMMON = "common.conf"

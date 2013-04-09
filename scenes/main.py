@@ -42,13 +42,13 @@ class Main(configurable.Scene):
         # in this scene! (JL 2013-04-08)
         self.load_configurations(self.moonville, MAIN)
 
-        background = cocos.sprite.Sprite(RESOURCES + "/Main_Menu_Background.png")
+        background = cocos.sprite.Sprite(MAIN_MENU_RESOURCES + "/Main_Menu_Background.png")
         background.position = (400, 300)
 
-        new_game_option = cocos.sprite.Sprite(RESOURCES + "/New_Game_Menu_Option.png")
+        new_game_option = cocos.sprite.Sprite(MAIN_MENU_RESOURCES + "/New_Game_Menu_Option.png")
         new_game_option.position = (180, 330)
 
-        options_option = cocos.sprite.Sprite(RESOURCES + "/Options_Menu_Option.png")
+        options_option = cocos.sprite.Sprite(MAIN_MENU_RESOURCES + "/Options_Menu_Option.png")
         options_option.position = (180, 270)
         
         self.add(cocos.layer.ColorLayer(0, 0, 0, 255), z = 0)

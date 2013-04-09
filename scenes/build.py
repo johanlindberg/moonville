@@ -56,9 +56,9 @@ class Build(configurable.Scene):
         self.add(MouseClickLayer(self.moonville, self), z = 2)
 
     def load_LVCS(self):
-        self.LVCS_button_out = cocos.sprite.Sprite(RESOURCES + "/LVCS_Button_Out.png")
+        self.LVCS_button_out = cocos.sprite.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Button_Out.png")
         
-        self.LVCS_button_in = cocos.sprite.Sprite(RESOURCES + "/LVCS_Button_In.png")
+        self.LVCS_button_in = cocos.sprite.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Button_In.png")
         self.LVCS_button_in.opacity = 0
 
         self.LVCS_button_out.position = (16, 40)
@@ -69,9 +69,9 @@ class Build(configurable.Scene):
 
         x, y = 68, 40
         for item in LVCS:
-            item_frame = cocos.sprite.Sprite(RESOURCES + "/LVCS_Item_Frame.png")
+            item_frame = cocos.sprite.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Item_Frame.png")
             item_filename = "/%s_64x64.png" % (item.replace(" ", "-"))
-            item_sprite = cocos.sprite.Sprite(RESOURCES + item_filename)
+            item_sprite = cocos.sprite.Sprite(LVCS_RESOURCES + item_filename)
 
             item_frame.position = (x, y)
             item_sprite.position = (x, y)
