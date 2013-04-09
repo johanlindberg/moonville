@@ -31,7 +31,7 @@ import pyglet
 # Moonville imports
 from constants import *
 import configurable
-import scenes.introduction
+import scenes.build
 
 class Main(configurable.Scene):
     def __init__(self, moonville):
@@ -62,8 +62,8 @@ class Main(configurable.Scene):
 
     # Menu callbacks
     def on_new_game(self):
-        intro = scenes.introduction.Introduction(self.moonville)
-        cocos.director.director.replace(cocos.scenes.transitions.ZoomTransition(intro, duration = 2))
+        build = scenes.build.Build(self.moonville)
+        cocos.director.director.replace(cocos.scenes.transitions.ZoomTransition(build, duration = 2))
         
     def on_options(self):
         print "TBD!"

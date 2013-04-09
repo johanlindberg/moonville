@@ -56,8 +56,19 @@ class Build(configurable.Scene):
         self.add(MouseClickLayer(self.moonville, self), z = 2)
 
     def load_LVCS(self):
-        x, y = 40, 40
-        for item in ["Nickel-Iron Battery", "Solar Cell", "Industrial Robot"]:
+        self.LVCS_button_out = cocos.sprite.Sprite(RESOURCES + "/LVCS_Button_Out.png")
+        
+        self.LVCS_button_in = cocos.sprite.Sprite(RESOURCES + "/LVCS_Button_In.png")
+        self.LVCS_button_in.opacity = 0
+
+        self.LVCS_button_out.position = (16, 40)
+        self.LVCS_button_in.position = (16, 40)
+        
+        self.add(self.LVCS_button_out, z = 4)
+        self.add(self.LVCS_button_in, z = 4)
+
+        x, y = 68, 40
+        for item in LVCS:
             item_frame = cocos.sprite.Sprite(RESOURCES + "/LVCS_Item_Frame.png")
             item_filename = "/%s_64x64.png" % (item.replace(" ", "-"))
             item_sprite = cocos.sprite.Sprite(RESOURCES + item_filename)
@@ -79,10 +90,24 @@ class Build(configurable.Scene):
         if self.showing_LVCS == show:
             return
 
+        # Toggle the LVCS button
+        if show:
+            self.LVCS_button_in.do(cocos.actions.FadeIn(0.25))
+            self.LVCS_button_out.do(cocos.actions.FadeOut(0.25))
+        else:
+            self.LVCS_button_in.do(cocos.actions.FadeOut(0.25))
+            self.LVCS_button_out.do(cocos.actions.FadeIn(0.25))
+
         self.showing_LVCS = show
-        delay = 0.2
-        for items in self.LVCS_sprites:
-            frame, sprite = items
+        delay = 0.1
+
+        # Reverse the "animation" when hiding
+        items = self.LVCS_sprites
+        if self.showing_LVCS == False:
+            items = reversed(items)
+            
+        for item in items:
+            frame, sprite = item
             
             if show:
                 action = cocos.actions.FadeIn(1)
@@ -92,7 +117,7 @@ class Build(configurable.Scene):
             frame.do(cocos.actions.Delay(delay) + action)
             sprite.do(cocos.actions.Delay(delay) + action)
 
-            delay += 0.1
+            delay += 0.05
 
 class MouseClickLayer(cocos.layer.Layer):
     is_event_handler = True
@@ -102,10 +127,14 @@ class MouseClickLayer(cocos.layer.Layer):
         self.moonville = moonville
         self.scene = scene
 
+        self.show = False
+
     def on_mouse_press(self, x, y, buttons, modifiers):
-        self.scene.show_LVCS(False)
+        left, right = 0, 32
+        top, bottom = 8, 72
+        if x > left and x < right and y > top and y < bottom:
+            self.show = not(self.show)
+            self.scene.show_LVCS(self.show)            
         
     def on_mouse_motion (self, x, y, dx, dy):
-        # Check for activation of LVCS menu (bottom 20px of window)
-        if y < 20:
-            self.scene.show_LVCS(True)
+        pass

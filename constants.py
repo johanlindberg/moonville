@@ -72,3 +72,8 @@ HEIGHT = 600
 # Text
 LINE_HEIGHT = 25
 
+# Lunar Village Construction Set
+LVCS = ["Nickel-Iron Battery", "Solar Cell",
+        "Industrial Robot", "3D-printer", "Aluminum Extractor",
+        "Plastic Extruder", "Drilling Rig", "Induction Furnace", "Press Forge",
+        "Bulldozer"]
