@@ -54,7 +54,7 @@ class Build(configurable.Scene):
         self.add(cocos.layer.ColorLayer(132, 146, 119, 255), z = 0)
         self.add(scrolling_manager, z = 1)
 
-        self.add(MouseClickLayer(self.moonville, self), z = 2)
+        self.add(MouseClickLayer(self), z = 2)
 
     def load_LVCS(self):
         self.LVCS_button_out = extended.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Button_Out.png")
@@ -70,9 +70,9 @@ class Build(configurable.Scene):
 
         x, y = 68, 40
         for item in LVCS:
-            item_frame = cocos.sprite.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Item_Frame.png")
+            item_frame = extended.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Item_Frame.png")
             item_filename = "/%s_64x64.png" % (item.replace(" ", "-"))
-            item_sprite = cocos.sprite.Sprite(LVCS_RESOURCES + item_filename)
+            item_sprite = extended.Sprite(LVCS_RESOURCES + item_filename)
 
             item_frame.position = (x, y)
             item_sprite.position = (x, y)
@@ -123,14 +123,15 @@ class Build(configurable.Scene):
 class MouseClickLayer(cocos.layer.Layer):
     is_event_handler = True
 
-    def __init__(self, moonville, scene):
+    def __init__(self, scene):
         super(MouseClickLayer, self).__init__()
-        self.moonville = moonville
         self.scene = scene
 
-        self.show = False
-
     def on_mouse_press(self, x, y, buttons, modifiers):
+        self.handle_LVCS_toggle(x, y)
+        self.handle_select_item(x, y)
+
+    def handle_LVCS_toggle(self, x, y):
         # Check for LVCS toggle button press
         if self.scene.LVCS_button_in.opacity > 0 and \
            self.scene.LVCS_button_in.covers((x, y)):
@@ -142,5 +143,15 @@ class MouseClickLayer(cocos.layer.Layer):
             
             self.scene.show_LVCS(True)
 
+    def handle_select_item(self, x, y):
+        items = self.scene.LVCS_sprites
+        for item in items:
+            frame, sprite = item
+            if sprite.covers((x, y)):
+                if sprite.opacity == 255:
+                    sprite.opacity = 192
+                else:
+                    sprite.opacity = 255
+        
     def on_mouse_motion (self, x, y, dx, dy):
         pass
