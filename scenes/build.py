@@ -72,7 +72,8 @@ class Build(configurable.Scene):
         for item in LVCS:
             item_frame = extended.Sprite(POPUP_MENU_RESOURCES + "/LVCS_Item_Frame.png")
             item_filename = "/%s_64x64.png" % (item.replace(" ", "-"))
-            item_sprite = extended.Sprite(LVCS_RESOURCES + item_filename)
+            item_image = pyglet.image.load(LVCS_RESOURCES + item_filename)
+            item_sprite = extended.Sprite(item_image)
 
             item_frame.position = (x, y)
             item_sprite.position = (x, y)
@@ -85,7 +86,7 @@ class Build(configurable.Scene):
             
             x += 68
 
-            self.LVCS_sprites.append(copy.copy((item_frame, item_sprite)))
+            self.LVCS_sprites.append(copy.copy((item_frame, item_sprite, item_image)))
 
     def show_LVCS(self, show = True):
         if self.showing_LVCS == show:
@@ -108,7 +109,7 @@ class Build(configurable.Scene):
             items = reversed(items)
             
         for item in items:
-            frame, sprite = item
+            frame, sprite, image = item
             
             if show:
                 action = cocos.actions.FadeIn(1)
@@ -153,7 +154,7 @@ class MouseClickLayer(cocos.layer.Layer):
 
     def handle_select_item(self, x, y):
         for item in self.scene.LVCS_sprites:
-            frame, sprite = item
+            frame, sprite, image = item
             if sprite.covers((x, y)):
                 if sprite.opacity == 255:
                     sprite.opacity = 192
@@ -168,13 +169,21 @@ class MouseClickLayer(cocos.layer.Layer):
         if self.scene.moonville.model.selected_LVCS_item:
             index = self.scene.moonville.model.selected_LVCS_item
 
-            gx = ((x / 64) * 64) + 32
-            gy = ((y / 64) * 64) + 32
+            gx = (x / 64)
+            gy = (y / 64)
+            if self.scene.moonville.model.grid[gx][gy] != -1:
+                return False
+            
+            _x = (gx * 64) + 32
+            _y = (gy * 64) + 32
 
-            _, sprite = self.scene.LVCS_sprites[index]
-            gsprite = copy.copy(sprite)
-            gsprite.position = (gx, gy)
+            _, _, image = self.scene.LVCS_sprites[index]
+            gsprite = extended.Sprite(image)
+            gsprite.position = (_x, _y)
             self.scene.add(gsprite, z = 5)
+
+            self.scene.moonville.model.grid[gx][gy] = index
+            
             self.scene.moonville.model.selected_LVCS_item = None
 
             return True
