@@ -128,8 +128,14 @@ class MouseClickLayer(cocos.layer.Layer):
         self.scene = scene
 
     def on_mouse_press(self, x, y, buttons, modifiers):
-        self.handle_LVCS_toggle(x, y)
-        self.handle_select_item(x, y)
+        if self.handle_LVCS_toggle(x, y):
+            return
+        
+        if self.handle_select_item(x, y):
+            return
+        
+        if self.handle_deploy_LVCS_item(x, y):
+            return
 
     def handle_LVCS_toggle(self, x, y):
         # Check for LVCS toggle button press
@@ -137,21 +143,41 @@ class MouseClickLayer(cocos.layer.Layer):
            self.scene.LVCS_button_in.covers((x, y)):
 
             self.scene.show_LVCS(False)
+            return True
             
         elif self.scene.LVCS_button_out.opacity > 0 and \
              self.scene.LVCS_button_out.covers((x, y)):
             
             self.scene.show_LVCS(True)
+            return True
 
     def handle_select_item(self, x, y):
-        items = self.scene.LVCS_sprites
-        for item in items:
+        for item in self.scene.LVCS_sprites:
             frame, sprite = item
             if sprite.covers((x, y)):
                 if sprite.opacity == 255:
                     sprite.opacity = 192
+                    self.scene.moonville.model.selected_LVCS_item = self.scene.LVCS_sprites.index(item)
                 else:
                     sprite.opacity = 255
-        
+                    self.scene.moonville.model.selected_LVCS_item = None
+
+                return True
+
+    def handle_deploy_LVCS_item(self, x, y):
+        if self.scene.moonville.model.selected_LVCS_item:
+            index = self.scene.moonville.model.selected_LVCS_item
+
+            gx = ((x / 64) * 64) + 32
+            gy = ((y / 64) * 64) + 32
+
+            _, sprite = self.scene.LVCS_sprites[index]
+            gsprite = copy.copy(sprite)
+            gsprite.position = (gx, gy)
+            self.scene.add(gsprite, z = 5)
+            self.scene.moonville.model.selected_LVCS_item = None
+
+            return True
+    
     def on_mouse_motion (self, x, y, dx, dy):
         pass

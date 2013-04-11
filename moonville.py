@@ -30,6 +30,7 @@ import cocos
 # Moonville imports
 from constants import *
 import scenes.main
+import model
 
 class Moonville(object):
     def __init__(self, game = None):
@@ -52,6 +53,8 @@ class Moonville(object):
             self.game_dir = game_dir
 
             self.locations = self.load_locations(game_dir)
+
+            self.model = model.PartI()
 
     def load_introduction(self, information):
         text = []
