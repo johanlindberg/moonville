@@ -144,6 +144,8 @@ class MouseClickLayer(cocos.layer.Layer):
            self.scene.LVCS_button_in.covers((x, y)):
 
             self.scene.show_LVCS(False)
+            self.scene.moonville.model.selected_LVCS_item = None
+            
             return True
             
         elif self.scene.LVCS_button_out.opacity > 0 and \
@@ -169,21 +171,21 @@ class MouseClickLayer(cocos.layer.Layer):
         if self.scene.moonville.model.selected_LVCS_item:
             index = self.scene.moonville.model.selected_LVCS_item
 
-            gx = (x / 64)
-            gy = (y / 64)
+            gx, gy = (x / 64), (y / 64)
             if self.scene.moonville.model.grid[gx][gy] != -1:
                 return False
             
             _x = (gx * 64) + 32
             _y = (gy * 64) + 32
 
-            _, _, image = self.scene.LVCS_sprites[index]
+            _, sprite, image = self.scene.LVCS_sprites[index]
             gsprite = extended.Sprite(image)
             gsprite.position = (_x, _y)
             self.scene.add(gsprite, z = 5)
 
             self.scene.moonville.model.grid[gx][gy] = index
-            
+
+            sprite.opacity = 255
             self.scene.moonville.model.selected_LVCS_item = None
 
             return True
