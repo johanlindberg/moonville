@@ -18,14 +18,40 @@ import cocos
 
 # Moonville imports
 from constants import *
-import scenes.main
+import scenes.menu
 import model
 
 class Moonville(object):
-    def __init__(self, game = None):
-        if game is not None:
-            self.load_game(game)
-            self.start()
+    def __init__(self):
+        self.start()
+
+    def load_games(self):
+        """Returns a list of the available games in /games."""
+
+        self.root_dir = os.path.abspath(".")
+        self.games_dir = os.path.abspath(GAMES_DIR + "/")
+        games = []
+        for fname in os.listdir(self.games_dir):
+            game_dir = self.games_dir + "/" + fname
+            if os.path.isdir(game_dir) and \
+               fname[0] != ".":
+                games.append(fname)
+
+        return games
+
+    def load_levels(self, game):
+        """Returns a list of the available levels for <game>."""
+
+        levels_dir = os.path.abspath(GAMES_DIR + "/" + game + "/levels")
+        levels = []
+        for fname in os.listdir(levels_dir):
+            level_dir = levels_dir + "/" + fname
+            if os.path.isdir(level_dir) and \
+               fname[0] != ".":
+                levels.append(fname)
+
+        return levels
+        
         
     def load_game(self, game):
         """Initializes Moonville with <game>'s configuration.
@@ -34,7 +60,6 @@ class Moonville(object):
         moonville.py is located. Once we package this as an executable that
         might not be the case.
         """
-        
         game_dir = os.path.abspath(GAMES_DIR + "/" + game)
         if os.path.exists(game_dir) and \
            os.path.isdir(game_dir):
@@ -45,19 +70,9 @@ class Moonville(object):
 
             self.model = model.PartI()
 
-    def load_introduction(self, information):
-        text = []
-        try:
-            text_in = open(information['text'])
-            text = text_in.readlines()
-
-        finally:
-            text_in.close()
-
-        return text
-
     def load_locations(self, game_dir):
-        locations_dir = os.path.abspath(game_dir + LOCATIONS_DIR)
+        """XXX Hard coded level easy! JL 2013-04-16"""
+        locations_dir = os.path.abspath(game_dir + "/levels/easy/" + LOCATIONS_DIR)
         if os.path.exists(locations_dir) and \
            os.path.isdir(locations_dir):
             self.locations_dir = locations_dir
@@ -75,13 +90,7 @@ class Moonville(object):
         """Starts the Moonville platform."""
         
         cocos.director.director.init(resizable = False, width = WIDTH, height = HEIGHT)
-        self.main = scenes.main.Main(self)
-        cocos.director.director.run(self.main)
+        cocos.director.director.run(scenes.menu.Main_Menu(self))
     
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print USAGE
-        sys.exit(1)
-
-    game = sys.argv[1]
-    moonville = Moonville(game)
+    moonville = Moonville()
